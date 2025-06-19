@@ -15,6 +15,3 @@ public class SecurityUtils {
 }
 
 
-//Exemplo:
-//String email = SecurityUtils.getEmailUsuarioAutenticado();
-

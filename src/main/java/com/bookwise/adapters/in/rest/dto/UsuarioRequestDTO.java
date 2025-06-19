@@ -11,7 +11,7 @@ public record UsuarioRequestDTO(String nome, String email, String senha, LocalDa
         Usuario usuario = new Usuario();
         usuario.setNome(this.nome);
         usuario.setEmail(this.email);
-        usuario.setPassword(this.senha); // se quiser já codificar a senha, faça isso fora
+        usuario.setPassword(this.senha);
         usuario.setDataNascimento(this.dataNascimento);
         return usuario;
     }

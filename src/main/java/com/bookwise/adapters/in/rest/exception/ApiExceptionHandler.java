@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.Map;
+import java.util.Optional;
+
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -28,34 +31,36 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ApiErrorResponse> handleDatabaseException(Exception ex) {
-        // TODO: Refactor this
-        String codigo = "DUPLICIDADE_DE_DADOS";
-        String mensagem = "Erro geral";
+        String causeMessage = Optional.ofNullable(ex.getCause())
+                .map(Throwable::getMessage)
+                .map(String::toLowerCase)
+                .orElse("");
 
 
-        if (ex.getCause() != null && ex.getCause().getMessage() != null) {
-            String msg = ex.getCause().getMessage().toLowerCase();
-            if (msg.contains("usuarios") && msg.contains("unique") || msg.contains("duplicat")) {
-                 codigo = "DUPLICIDADE_DE_DADOS";
-                 mensagem = "Usuário duplicado";
-            } else if (msg.contains("livros")){
+        Map<String, ApiErrorResponse> errorMap = Map.of(
+                "usuarios", new ApiErrorResponse("DUPLICIDADE_DE_DADOS", "Usuário duplicado"),
+                "livros", new ApiErrorResponse("DUPLICIDADE_DE_DADOS", "Livro duplicado")
+        );
 
-                    codigo = "DUPLICIDADE_DE_DADOS";
-                    mensagem = "Livro duplicado";
+        ApiErrorResponse response = errorMap.entrySet().stream()
+                .filter(entry -> causeMessage.contains(entry.getKey()) &&
+                        (causeMessage.contains("unique") || causeMessage.contains("duplicat")))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElseGet(() -> {
+                    if (!causeMessage.isEmpty()) {
+                        return new ApiErrorResponse("DADOS_INCOMPLETOS", "Falta dados na requisição");
+                    }
+                    return new ApiErrorResponse("ERRO_GERAL", "Erro geral");
+                });
 
-            } else {
-                codigo = "DADOS_INCOMPLETOS";
-                mensagem = "Falta dados na requisição";
-            }
-        }
+        HttpStatus status = response.codigo().equals("DADOS_INCOMPLETOS")
+                ? HttpStatus.BAD_REQUEST
+                : HttpStatus.CONFLICT;
 
-        ApiErrorResponse response = new ApiErrorResponse(codigo, mensagem);
-        if (codigo.contains("DADOS_INCOMPLETOS")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        return ResponseEntity.status(status).body(response);
     }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
@@ -77,7 +82,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        String nomeParametro = ex.getName(); // Ex: "dataInicio"
+        String nomeParametro = ex.getName();
         String valor = String.valueOf(ex.getValue());
 
         String mensagem = "O valor '" + valor + "' informado para o parâmetro '" + nomeParametro + "' é inválido.";

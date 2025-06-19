@@ -106,7 +106,7 @@ class LivroServiceTest {
                 .setTitulo("Livro 3")
                 .setAutor("Autor 3")
                 .setUsuario("outro@example.com")
-                .setLido(false)   // Não lido pelo usuário
+                .setLido(false)
                 .setGeneros(Set.of("Fantasia"));
 
         when(livroRepository.buscarTodos()).thenReturn(List.of(livroLido, livroNaoLido, recomendacao));
