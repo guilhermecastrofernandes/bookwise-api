@@ -1,5 +1,6 @@
 package com.bookwise.domain.model;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public class Livro {
@@ -9,6 +10,10 @@ public class Livro {
     private Integer anoPublicacao;
     private Set<String> generos;
     private String sinopse;
+    private boolean lido;
+    private Integer nota;
+    private LocalDate dataLeitura;
+    private String usuario;
 
     public Long getId() {
         return id;
@@ -64,6 +69,43 @@ public class Livro {
         return this;
     }
 
+    public boolean isLido() {
+        return lido;
+    }
+
+    public Livro setLido(boolean lido) {
+        this.lido = lido;
+        return this;
+    }
+
+    public Integer getNota() {
+        return nota;
+    }
+
+    public Livro setNota(Integer nota) {
+        this.nota = nota;
+        return this;
+    }
+
+
+    public LocalDate getDataLeitura() {
+        return dataLeitura;
+    }
+
+    public Livro setDataLeitura(LocalDate dataLeitura) {
+        this.dataLeitura = dataLeitura;
+        return this;
+    }
+
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public Livro setUsuario(String usuario) {
+        this.usuario = usuario;
+        return this;
+    }
 }
 
 

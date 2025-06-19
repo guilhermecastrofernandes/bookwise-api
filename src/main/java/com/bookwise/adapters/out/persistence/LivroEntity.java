@@ -3,10 +3,12 @@ package com.bookwise.adapters.out.persistence;
 import com.bookwise.domain.model.Livro;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "livros")
+@Table(name = "livros",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"titulo", "autor"}))
 public class LivroEntity {
 
     @Id
@@ -21,6 +23,14 @@ public class LivroEntity {
 
     private String sinopse;
 
+    private boolean lido;
+
+    private Integer nota;
+
+    private LocalDate dataLeitura;
+
+    private String usuario;
+
     public Livro toDomain() {
         Livro livro = new Livro();
         livro.setId(id);
@@ -29,6 +39,11 @@ public class LivroEntity {
         livro.setAnoPublicacao(anoPublicacao);
         livro.setGeneros(generos);
         livro.setSinopse(sinopse);
+        livro.setLido(lido);
+        livro.setNota(nota);
+        livro.setDataLeitura(dataLeitura);
+        livro.setUsuario(usuario);
+
         return livro;
     }
 
@@ -40,6 +55,10 @@ public class LivroEntity {
         entity.anoPublicacao = livro.getAnoPublicacao();
         entity.generos = livro.getGeneros();
         entity.sinopse = livro.getSinopse();
+        entity.lido = livro.isLido();
+        entity.nota = livro.getNota();
+        entity.dataLeitura = livro.getDataLeitura();
+        entity.usuario = livro.getUsuario();
         return entity;
     }
 }

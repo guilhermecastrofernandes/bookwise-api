@@ -23,14 +23,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.disable()) // ✅ substitui o frameOptions().disable()
+                .headers(headers -> headers.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/h2-console/**"
+                                "/h2-console/**",
+                                "/usuarios"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

@@ -1,3 +1,5 @@
 package com.bookwise.adapters.in.rest.dto;
 
-public record UsuarioResponse(Long id, String nome, String email) {}
+import java.time.LocalDate;
+
+public record UsuarioResponse(Long id, String nome, String email, LocalDate dataNascimento) {}

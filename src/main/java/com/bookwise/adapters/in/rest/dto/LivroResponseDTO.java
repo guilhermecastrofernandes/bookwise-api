@@ -2,6 +2,7 @@ package com.bookwise.adapters.in.rest.dto;
 
 import com.bookwise.domain.model.Livro;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public record LivroResponseDTO(
@@ -10,7 +11,10 @@ public record LivroResponseDTO(
         String autor,
         Integer anoPublicacao,
         Set<String> generos,
-        String sinopse
+        String sinopse,
+        boolean lido,
+        Integer nota,
+        LocalDate dataLeitura
 ) {
     public static LivroResponseDTO from(Livro livro) {
         return new LivroResponseDTO(
@@ -19,7 +23,10 @@ public record LivroResponseDTO(
                 livro.getAutor(),
                 livro.getAnoPublicacao(),
                 livro.getGeneros(),
-                livro.getSinopse()
+                livro.getSinopse(),
+                livro.isLido(),
+                livro.getNota(),
+                livro.getDataLeitura()
         );
     }
 }

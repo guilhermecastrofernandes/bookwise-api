@@ -4,15 +4,14 @@ import com.bookwise.adapters.in.rest.dto.LivroRequestDTO;
 import com.bookwise.adapters.in.rest.dto.LivroResponseDTO;
 import com.bookwise.domain.model.Livro;
 import com.bookwise.domain.ports.in.LivroUseCase;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import com.bookwise.infrastructure.security.SecurityUtils;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,5 +35,32 @@ public class LivroController {
         var livros = livroService.buscarTodos();
         return ResponseEntity.ok(livros.stream().map(LivroResponseDTO::from).toList());
     }
+
+    @GetMapping("/filtro")
+    public ResponseEntity<List<LivroResponseDTO>> filtrar(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String autor,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim
+
+    ) {
+        var livros = livroService.buscarPorFiltros(titulo, autor, genero, dataInicio, dataFim);
+        return ResponseEntity.ok(livros.stream().map(LivroResponseDTO::from).toList());
+    }
+
+    @GetMapping("/recomendados")
+    public ResponseEntity<List<LivroResponseDTO>> recomendarLivros() {
+        String email = SecurityUtils.getEmailUsuarioAutenticado();
+
+        List<Livro> recomendados = livroService.buscarGenerosFavoritosPorUsuario(email);
+
+        return ResponseEntity.ok(
+                recomendados.stream().map(LivroResponseDTO::from).toList()
+        );
+    }
+
+
+
 }
 

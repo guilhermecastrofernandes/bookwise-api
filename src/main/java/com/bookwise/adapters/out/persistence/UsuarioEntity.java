@@ -21,6 +21,7 @@ public class UsuarioEntity {
 
     private LocalDate dataNascimento;
 
+
     public Long getId() {
         return id;
     }
