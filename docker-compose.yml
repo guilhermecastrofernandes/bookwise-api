@@ -1,0 +1,12 @@
+services:
+  bookwise-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    volumes:
+      - bookwise_data:/data
+
+volumes:
+  bookwise_data:
