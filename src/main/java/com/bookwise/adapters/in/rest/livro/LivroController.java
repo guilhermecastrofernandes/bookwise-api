@@ -1,4 +1,4 @@
-package com.bookwise.adapters.in.rest;
+package com.bookwise.adapters.in.rest.livro;
 
 import com.bookwise.adapters.in.rest.dto.LivroRequestDTO;
 import com.bookwise.adapters.in.rest.dto.LivroResponseDTO;

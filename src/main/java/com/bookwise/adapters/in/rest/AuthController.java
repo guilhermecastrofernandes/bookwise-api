@@ -3,7 +3,7 @@ package com.bookwise.adapters.in.rest;
 import com.bookwise.adapters.in.rest.dto.LoginRequest;
 import com.bookwise.adapters.in.rest.dto.LoginResponse;
 import com.bookwise.adapters.in.rest.exception.UsuarioNotFoundException;
-import com.bookwise.adapters.out.persistence.UsuarioJpaRepository;
+import com.bookwise.adapters.out.persistence.usuario.UsuarioJpaRepository;
 import com.bookwise.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

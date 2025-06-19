@@ -1,4 +1,4 @@
-package com.bookwise.adapters.out.persistence;
+package com.bookwise.adapters.out.persistence.usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

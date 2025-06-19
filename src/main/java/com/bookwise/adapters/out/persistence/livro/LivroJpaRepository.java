@@ -1,4 +1,4 @@
-package com.bookwise.adapters.out.persistence;
+package com.bookwise.adapters.out.persistence.livro;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

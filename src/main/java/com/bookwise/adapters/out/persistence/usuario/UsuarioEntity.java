@@ -1,4 +1,4 @@
-package com.bookwise.adapters.out.persistence;
+package com.bookwise.adapters.out.persistence.usuario;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

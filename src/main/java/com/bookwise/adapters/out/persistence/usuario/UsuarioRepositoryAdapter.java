@@ -1,4 +1,4 @@
-package com.bookwise.adapters.out.persistence;
+package com.bookwise.adapters.out.persistence.usuario;
 
 import com.bookwise.domain.model.Usuario;
 import com.bookwise.domain.ports.out.UsuarioRepositoryPort;

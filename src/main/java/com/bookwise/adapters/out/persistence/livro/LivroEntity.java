@@ -1,4 +1,4 @@
-package com.bookwise.adapters.out.persistence;
+package com.bookwise.adapters.out.persistence.livro;
 
 import com.bookwise.domain.model.Livro;
 import jakarta.persistence.*;
