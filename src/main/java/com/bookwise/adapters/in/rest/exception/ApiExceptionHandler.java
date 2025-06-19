@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -27,7 +28,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ApiErrorResponse> handleDatabaseException(Exception ex) {
-
+        // TODO: Refactor this
         String codigo = "DUPLICIDADE_DE_DADOS";
         String mensagem = "Erro geral";
 
@@ -72,5 +73,16 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         ex.getStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorResponse("BAD_REQUEST", "Senha deve ser preenchida"));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String nomeParametro = ex.getName(); // Ex: "dataInicio"
+        String valor = String.valueOf(ex.getValue());
+
+        String mensagem = "O valor '" + valor + "' informado para o parâmetro '" + nomeParametro + "' é inválido.";
+        return ResponseEntity
+                .badRequest()
+                .body(new ApiErrorResponse("PARAMETRO_INVALIDO", mensagem));
     }
 }
