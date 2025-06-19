@@ -16,14 +16,6 @@ public class Usuario {
     private LocalDate dataNascimento;
 
 
-    public Usuario(Long id, String nome, String email, String password, LocalDate dataNascimento) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.password = password;
-        this.dataNascimento = dataNascimento;
-    }
-
     public Long getId() {
         return id;
     }

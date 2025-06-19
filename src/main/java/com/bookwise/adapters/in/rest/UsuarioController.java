@@ -1,6 +1,6 @@
 package com.bookwise.adapters.in.rest;
 
-import com.bookwise.adapters.in.rest.dto.UsuarioRequest;
+import com.bookwise.adapters.in.rest.dto.UsuarioRequestDTO;
 import com.bookwise.adapters.in.rest.dto.UsuarioResponse;
 import com.bookwise.domain.model.Usuario;
 import com.bookwise.domain.ports.in.UsuarioUseCase;
@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,9 +35,8 @@ public class UsuarioController {
 
     @Operation(summary = "Cadastro de novo usuário")
     @PostMapping
-    public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody UsuarioRequest request) {
-        Usuario novo = new Usuario(null, request.nome(), request.email(), request.senha(), request.dataNascimento());
-        Usuario salvo = usuarioService.cadastrar(novo);
+    public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody @Valid UsuarioRequestDTO dto) {
+        Usuario salvo = usuarioService.cadastrar(dto.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED).body(new UsuarioResponse(salvo.getId(), salvo.getNome(), salvo.getEmail(), salvo.getDataNascimento()));
     }
 

@@ -29,7 +29,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     @Override
     public Optional<Usuario> buscarPorEmail(String email) {
         return jpa.findByEmail(email)
-                .map(entity -> new Usuario(entity.getId(), entity.getNome(), entity.getEmail(), entity.getSenha(), entity.getDataNascimento()));
+                .map(entity -> new Usuario());
     }
 }
 
