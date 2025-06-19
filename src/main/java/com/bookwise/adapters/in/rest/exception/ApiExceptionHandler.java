@@ -37,21 +37,40 @@ public class ApiExceptionHandler {
             if (msg.contains("usuarios") && msg.contains("unique") || msg.contains("duplicat")) {
                  codigo = "DUPLICIDADE_DE_DADOS";
                  mensagem = "Usuário duplicado";
-            } else {
-                if (msg.contains("livros")) {
+            } else if (msg.contains("livros")){
+
                     codigo = "DUPLICIDADE_DE_DADOS";
                     mensagem = "Livro duplicado";
-                }
+
+            } else {
+                codigo = "DADOS_INCOMPLETOS";
+                mensagem = "Falta dados na requisição";
             }
         }
 
         ApiErrorResponse response = new ApiErrorResponse(codigo, mensagem);
+        if (codigo.contains("DADOS_INCOMPLETOS")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
+        ex.getStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiErrorResponse("ERRO_INTERNO", "Ocorreu um erro inesperado."));
+    }
+
+    @ExceptionHandler(UsuarioNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleUsuarioNotFoundException(UsuarioNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse("USUARIO_NÃO_ENCONTRADO", "Usuário não encontrado na base de dados."));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ex.getStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorResponse("BAD_REQUEST", "Senha deve ser preenchida"));
     }
 }

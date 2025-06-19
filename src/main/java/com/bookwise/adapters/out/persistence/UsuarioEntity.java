@@ -1,6 +1,7 @@
 package com.bookwise.adapters.out.persistence;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
@@ -12,11 +13,16 @@ public class UsuarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "O email é obrigatório.")
     private String email;
 
+    @Column(nullable = false)
+    @NotBlank(message = "A senha é obrigatória.")
     private String senha;
 
     private LocalDate dataNascimento;

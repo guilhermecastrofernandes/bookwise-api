@@ -4,6 +4,10 @@ import com.bookwise.adapters.in.rest.dto.UsuarioRequest;
 import com.bookwise.adapters.in.rest.dto.UsuarioResponse;
 import com.bookwise.domain.model.Usuario;
 import com.bookwise.domain.ports.in.UsuarioUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/usuarios")
+@Tag(name = "Usuários")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+        @ApiResponse(responseCode = "500", description = "Erro ao criar o usuário"),
+        @ApiResponse(responseCode = "400", description = "Ausência de informações na requisição"),
+        @ApiResponse(responseCode = "409", description = "Usuário em duplicidade")
+})
 public class UsuarioController {
 
     private final UsuarioUseCase usuarioService;
@@ -21,6 +32,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @Operation(summary = "Cadastro de novo usuário")
     @PostMapping
     public ResponseEntity<UsuarioResponse> cadastrar(@RequestBody UsuarioRequest request) {
         Usuario novo = new Usuario(null, request.nome(), request.email(), request.senha(), request.dataNascimento());
