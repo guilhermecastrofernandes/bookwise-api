@@ -67,6 +67,28 @@ public class LivroController {
         );
     }
 
+    @Operation(summary = "Deletar um livro por ID")
+    @ApiResponse(responseCode = "204", description = "Livro deletado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Livro não encontrado")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        livroService.deletarLivro(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Atualizar um livro existente por ID")
+    @ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Livro não encontrado")
+    @PutMapping("/{id}")
+    public ResponseEntity<LivroResponseDTO> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid LivroRequestDTO dto
+    ) {
+        Livro atualizado = livroService.atualizarLivro(id, dto.toDomain());
+        return ResponseEntity.ok(LivroResponseDTO.from(atualizado));
+    }
+
+
 
 
 }

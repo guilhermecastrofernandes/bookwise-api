@@ -14,4 +14,7 @@ public interface LivroUseCase {
     List<Livro> buscarGenerosFavoritosPorUsuario(String emailUsuario);
 
 
+    void deletarLivro(Long id);
+
+    Livro atualizarLivro(Long id, Livro domain);
 }

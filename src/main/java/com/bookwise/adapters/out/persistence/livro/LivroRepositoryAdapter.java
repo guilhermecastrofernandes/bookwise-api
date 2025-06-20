@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class LivroRepositoryAdapter implements LivroRepositoryPort {
@@ -66,6 +67,16 @@ public class LivroRepositoryAdapter implements LivroRepositoryPort {
     @Override
     public List<Livro> buscarLivrosPorUsuario(String usuario) {
         return jpa.findByUsuario(usuario).stream().map(LivroEntity::toDomain).toList();
+    }
+
+    @Override
+    public Optional<Livro> buscarPorId(Long id) {
+        return jpa.findById(id).map(LivroEntity::toDomain);
+    }
+
+    @Override
+    public void deletar(Long id) {
+        jpa.deleteById(id);
     }
 
 

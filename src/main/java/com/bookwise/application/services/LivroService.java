@@ -78,5 +78,40 @@ public class LivroService implements LivroUseCase {
                 .toList();
     }
 
+    @Override
+    public void deletarLivro(Long id) {
+        Livro livro = livroRepository.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+
+        String email = SecurityUtils.getEmailUsuarioAutenticado();
+        if (!livro.getUsuario().equals(email)) {
+            throw new RuntimeException("Usuário não autorizado a deletar este livro");
+        }
+
+        livroRepository.deletar(id);
+    }
+
+    @Override
+    public Livro atualizarLivro(Long id, Livro domain) {
+        Livro existente = livroRepository.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+
+        String email = SecurityUtils.getEmailUsuarioAutenticado();
+        if (!existente.getUsuario().equals(email)) {
+            throw new RuntimeException("Usuário não autorizado a atualizar este livro");
+        }
+
+
+        existente.setTitulo(domain.getTitulo());
+        existente.setAutor(domain.getAutor());
+        existente.setGeneros(domain.getGeneros());
+        existente.setLido(domain.isLido());
+        existente.setDataLeitura(domain.getDataLeitura());
+        existente.setNota(domain.getNota());
+
+        return livroRepository.salvar(existente);
+
+    }
+
 
 }
