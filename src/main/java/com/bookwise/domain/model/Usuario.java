@@ -11,7 +11,7 @@ public class Usuario {
 
     private String email;
 
-    private String password;
+    private String senha;
 
     private LocalDate dataNascimento;
 
@@ -32,12 +32,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 

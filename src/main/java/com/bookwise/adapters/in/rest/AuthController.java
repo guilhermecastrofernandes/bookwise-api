@@ -2,7 +2,7 @@ package com.bookwise.adapters.in.rest;
 
 import com.bookwise.adapters.in.rest.dto.LoginRequest;
 import com.bookwise.adapters.in.rest.dto.LoginResponse;
-import com.bookwise.adapters.in.rest.exception.UsuarioNotFoundException;
+import com.bookwise.adapters.in.rest.exception.NotFoundException;
 import com.bookwise.adapters.out.persistence.usuario.UsuarioJpaRepository;
 import com.bookwise.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +39,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest login) {
         var usuario = usuarioRepo.findByEmail(login.email())
-                .orElseThrow(() -> new UsuarioNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
         if (!encoder.matches(login.senha(), usuario.getSenha())) {
             return ResponseEntity.status(401).build();

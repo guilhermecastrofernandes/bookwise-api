@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,7 +19,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<ApiErrorResponse> handleDomainException(DomainException ex) {
         HttpStatus status = switch (ex.getCodigo()) {
-            case "LIVRO_NAO_LIDO" -> HttpStatus.CONFLICT;
             case "NOTA_INCORRETA" -> HttpStatus.CONFLICT;
 
             default -> HttpStatus.BAD_REQUEST;
@@ -69,15 +69,11 @@ public class ApiExceptionHandler {
                 .body(new ApiErrorResponse("ERRO_INTERNO", "Ocorreu um erro inesperado."));
     }
 
-    @ExceptionHandler(UsuarioNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleUsuarioNotFoundException(UsuarioNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse("USUARIO_NÃO_ENCONTRADO", "Usuário não encontrado na base de dados."));
-    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
         ex.getStackTrace();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorResponse("BAD_REQUEST", "Senha deve ser preenchida"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse("NOT FOUND", ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -89,5 +85,15 @@ public class ApiExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(new ApiErrorResponse("PARAMETRO_INVALIDO", mensagem));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleNotFound(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorResponse("BAD_REQUEST", ex.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorResponse("FORBIDDEN", ex.getMessage()));
     }
 }

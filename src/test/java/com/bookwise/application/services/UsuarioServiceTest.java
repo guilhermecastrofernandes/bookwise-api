@@ -34,7 +34,7 @@ class UsuarioServiceTest {
     void deveCadastrarUsuarioComSenhaCriptografada() {
         Usuario usuario = new Usuario();
         usuario.setEmail("teste@example.com");
-        usuario.setPassword("senha123");
+        usuario.setSenha("senha123");
 
         when(encoder.encode("senha123")).thenReturn("senhaCriptografada");
         when(usuarioRepo.salvar(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -42,7 +42,7 @@ class UsuarioServiceTest {
         Usuario usuarioSalvo = usuarioService.cadastrar(usuario);
 
         assertNotNull(usuarioSalvo);
-        assertEquals("senhaCriptografada", usuarioSalvo.getPassword());
+        assertEquals("senhaCriptografada", usuarioSalvo.getSenha());
         verify(encoder).encode("senha123");
         verify(usuarioRepo).salvar(usuarioSalvo);
     }

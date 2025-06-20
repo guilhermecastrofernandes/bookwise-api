@@ -1,5 +1,7 @@
 package com.bookwise.application.services;
 
+import com.bookwise.adapters.in.rest.exception.AccessDeniedException;
+import com.bookwise.adapters.in.rest.exception.NotFoundException;
 import com.bookwise.domain.model.Livro;
 import com.bookwise.domain.ports.in.LivroUseCase;
 import com.bookwise.domain.ports.out.LivroRepositoryPort;
@@ -81,11 +83,11 @@ public class LivroService implements LivroUseCase {
     @Override
     public void deletarLivro(Long id) {
         Livro livro = livroRepository.buscarPorId(id)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Livro não encontrado"));
 
         String email = SecurityUtils.getEmailUsuarioAutenticado();
         if (!livro.getUsuario().equals(email)) {
-            throw new RuntimeException("Usuário não autorizado a deletar este livro");
+            throw new AccessDeniedException("Usuário não autorizado a deletar este livro");
         }
 
         livroRepository.deletar(id);
@@ -94,11 +96,11 @@ public class LivroService implements LivroUseCase {
     @Override
     public Livro atualizarLivro(Long id, Livro domain) {
         Livro existente = livroRepository.buscarPorId(id)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+                .orElseThrow(() -> new NotFoundException("Livro não encontrado"));
 
         String email = SecurityUtils.getEmailUsuarioAutenticado();
         if (!existente.getUsuario().equals(email)) {
-            throw new RuntimeException("Usuário não autorizado a atualizar este livro");
+            throw new AccessDeniedException("Usuário não autorizado a atualizar este livro");
         }
 
 

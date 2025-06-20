@@ -1,5 +1,6 @@
 package com.bookwise.adapters.out.persistence.usuario;
 
+import com.bookwise.domain.model.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -17,7 +18,7 @@ public class UsuarioEntity {
     @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @NotBlank(message = "O email é obrigatório.")
     private String email;
 
@@ -71,5 +72,27 @@ public class UsuarioEntity {
     public UsuarioEntity setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
         return this;
+    }
+
+    public static Usuario toDomain(UsuarioEntity usuarioEntity) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioEntity.getId());
+        usuario.setNome(usuarioEntity.getNome());
+        usuario.setEmail(usuarioEntity.getEmail());
+        usuario.setSenha(usuarioEntity.getSenha());
+        usuario.setDataNascimento(usuarioEntity.getDataNascimento());
+        return usuario;
+    }
+
+
+
+    public static UsuarioEntity fromDomain(Usuario usuario) {
+        UsuarioEntity entity = new UsuarioEntity();
+        entity.setId(usuario.getId());
+        entity.setNome(usuario.getNome());
+        entity.setEmail(usuario.getEmail());
+        entity.setSenha(usuario.getSenha());
+        entity.setDataNascimento(usuario.getDataNascimento());
+        return entity;
     }
 }

@@ -20,7 +20,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
         UsuarioEntity entity = new UsuarioEntity();
         entity.setNome(usuario.getNome());
         entity.setEmail(usuario.getEmail());
-        entity.setSenha(usuario.getPassword());
+        entity.setSenha(usuario.getSenha());
         UsuarioEntity salvo = jpa.save(entity);
         usuario.setId(salvo.getId());
         return usuario;
@@ -30,6 +30,16 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     public Optional<Usuario> buscarPorEmail(String email) {
         return jpa.findByEmail(email)
                 .map(entity -> new Usuario());
+    }
+
+    @Override
+    public Optional<Usuario> buscarPorId(Long id) {
+        return jpa.findById(id).map(UsuarioEntity::toDomain);
+    }
+
+    @Override
+    public void deletar(Long id) {
+        jpa.deleteById(id);
     }
 }
 
