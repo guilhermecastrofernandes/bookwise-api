@@ -193,6 +193,17 @@ Authorization: Bearer <token>
 - Esse endpoint retorna livros recomendados baseados nos gêneros favoritos do usuário.
 
 ---
+## Rodando a API no Render
+
+Este aplicativo está disponível para acesso e testes no Render, uma plataforma de hospedagem na nuvem. Você pode usar o endpoint público para explorar e testar a API diretamente via Swagger UI.
+
+Acesse o Swagger UI online em:
+
+[https://bookwise-api.onrender.com/swagger-ui/index.html](https://bookwise-api.onrender.com/swagger-ui/index.html)
+
+Assim, você pode testar os endpoints da API sem precisar rodar localmente.
+
+---
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/guilhermecastrofernandes/bookwise-api)](https://github.com/guilhermecastrofernandes/bookwise-api)
 [![GitHub repo size](https://img.shields.io/github/repo-size/guilhermecastrofernandes/bookwise-api)](https://github.com/guilhermecastrofernandes/bookwise-api)
